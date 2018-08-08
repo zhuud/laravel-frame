@@ -37,7 +37,8 @@ class Carbon extends LaravelCarbon
     public static function countDays($start, $end) : int
     {
         if (strcmp($start,$end) > 0) {
-            11111;
+
+            Error::programErr('起止日期异常');
         }
 
         $startStamp = strtotime($start);
@@ -114,7 +115,7 @@ class Carbon extends LaravelCarbon
                 break;
 
             default :
-                11111;
+                Error::programErr('日期类型异常');
         }
 
         return  $dateList;

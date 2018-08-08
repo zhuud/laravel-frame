@@ -2,7 +2,6 @@
 
 namespace App\Libs;
 
-use App\Http\Traits\ExceptionMsg;
 use GuzzleHttp\Client AS GuzzleClient;
 
 /**
@@ -11,7 +10,6 @@ use GuzzleHttp\Client AS GuzzleClient;
  */
 class Client extends GuzzleClient
 {
-    use ExceptionMsg;
 
     /**
      * Create a GuzzleHttp\Client instance

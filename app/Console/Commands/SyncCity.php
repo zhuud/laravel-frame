@@ -2,16 +2,14 @@
 
 namespace App\Console\Commands;
 
-use App\Http\Libs\Client;
-use App\Http\Models\City;
-use App\Http\Traits\ExceptionMsg;
-use Illuminate\Console\Command;
 use Overtrue\LaravelPinyin\Facades\Pinyin;
+use App\Libs\Error;
+use App\Libs\Client;
+use App\Models\City;
+use Illuminate\Console\Command;
 
 class SyncCity extends Command
 {
-    use ExceptionMsg;
-
     /**
      * The name and signature of the console command.
      *
@@ -137,7 +135,7 @@ class SyncCity extends Command
 
         if (self::SUCCESS_CODE != $result['infocode']) {
 
-            self::genApiMsg($result['infocode'], $result['info']);
+            Error::apiErr($result['info']);
         }
 
         return  $result['districts'][0]['districts'];

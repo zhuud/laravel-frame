@@ -51,7 +51,7 @@ class Client extends GuzzleClient
      * @param   string  $response   响应内容
      * @return  mixed               结果
      */
-    public static function getResult($response)
+    public static function getResult($response) : array
     {
         return  json_decode($response, true);
     }

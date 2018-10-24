@@ -43,12 +43,43 @@ class File
     }
 
     /**
+     * 创建文件夹
+     *
+     * @param $path
+     */
+    public static function checkOrMakeDir(String $path)
+    {
+        is_dir($path) || mkdir($path, 0777, true);
+    }
+
+    /**
+     * 按文件路径创建文件夹
+     *
+     * @param $filePath
+     * @param bool $prefix
+     */
+    public static function mkDirAccToFile(String $filePath, $prefix = false)
+    {
+        $storePath = mb_substr($filePath, 0, mb_strrpos($filePath, '/'));
+
+        if ($prefix) {
+
+            $storePath = $prefix . '/' . $storePath;
+        }
+
+        if (!file_exists($storePath)) {
+
+            mkdir($storePath,0777, true);
+        }
+    }
+
+    /**
      * 文件大小格式转换
      *
      * @param $bytes
      * @return string
      */
-    static public function sizeConvert(string $bytes) : string
+    public static function sizeConvert(string $bytes) : string
     {
         $unit  = ['B','KB','MB','GB','TB','PB'];
 

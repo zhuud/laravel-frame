@@ -71,8 +71,8 @@ return [
             'bucket'        => env('OSS_BUCKET'),
             'endpoint'      => env('OSS_ENDPOINT'),             // OSS 外网节点或自定义外部域名
             'endpoint_internal' => env('OSS_ENDPOINT_INTERNAL', ''),     // 如果为空，则默认使用 endpoint 配置 // v2.0.4 新增配置属性，如果为空，则默认使用 endpoint 配置(由于内网上传有点小问题未解决，请大家暂时不要使用内网节点上传，正在与阿里技术沟通中)
-            'cdnDomain'     => env('OSS_CDN_DOMAIN', ''),       // 如果isCName为true, getUrl会判断cdnDomain是否设定来决定返回的url，如果cdnDomain未设置，则使用endpoint来生成url，否则使用cdn
-            'ssl'           => env('OSS_SSL', false),           // true to use 'https://' and false to use 'http://'. default is false,
+            'domain'        => env('OSS_CDN_DOMAIN', ''),       // 如果isCName为true, getUrl会判断cdnDomain是否设定来决定返回的url，如果cdnDomain未设置，则使用endpoint来生成url，否则使用cdn
+            'isSsl'         => env('OSS_IS_SSL', false),           // true to use 'https://' and false to use 'http://'. default is false,
             'isCName'       => env('OSS_IS_CNAME', false),      // 是否使用自定义域名,true: 则Storage.url()会使用自定义的cdn或域名生成文件url， false: 则使用外部节点生成url
             'debug'         => env('APP_DEBUG'),
         ],

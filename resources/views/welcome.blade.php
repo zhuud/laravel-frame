@@ -8,7 +8,7 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" type="image/ico" href="img/favicon.ico" sizes="144x144">
-    <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+    {{--<link rel="stylesheet" href="{{ mix('css/app.css') }}">--}}
 
     <title>Zhuud-</title>
 </head>
@@ -19,6 +19,6 @@
 </body>
 </html>
 
-<script src="{{ mix('js/manifest.js') }}"></script>
+{{--<script src="{{ mix('js/manifest.js') }}"></script>
 <script src="{{ mix('js/vendor.js') }}"></script>
-<script src="{{ mix('js/app.js') }}"></script>
+<script src="{{ mix('js/app.js') }}"></script>--}}

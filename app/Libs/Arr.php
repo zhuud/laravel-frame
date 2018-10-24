@@ -119,20 +119,17 @@ class Arr extends LaravelArr
      *
      * @param $arr
      * @param int $flags
-     * @return array
      */
-    public static function kSort($arr, $flags = SORT_NATURAL)
+    public static function kSort(&$arr, $flags = SORT_NATURAL)
     {
-        if (!is_array($arr)) return $arr;
-
-        foreach ($arr as &$item) {
-
-            self::sort($item);
-        }
+        if (!is_array($arr)) return;
 
         ksort($arr, $flags);
 
-        return  $arr;
+        foreach ($arr as &$item) {
+
+            self::kSort($item);
+        }
     }
 
     /**

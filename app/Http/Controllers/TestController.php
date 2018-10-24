@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Libs\Arr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Zhuud\Proxy\RouteProxy;
 
-class FooController extends Controller
+class TestController extends Controller
 {
     /**
      * @param \Illuminate\Http\Request $request
@@ -23,13 +24,33 @@ class FooController extends Controller
     }
 
     /**
+     * @param Request $request
+     * @return mixed
+     */
+    public function test(Request $request)
+    {
+        $argc = [
+            'appId' => '123456',
+            'timeStamp' => '123456',
+            'nonceStr' => '123456',
+            'params' => [
+                'a' => '1',
+                'c' => '2',
+                'b' => '3',
+            ],
+        ];
+        Arr::kSort($argc);
+        return $argc;
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function create(Request $request)
     {
-        return 'sdsdsd';
+        //
     }
 
     /**
@@ -40,7 +61,7 @@ class FooController extends Controller
      */
     public function store(Request $request)
     {
-        return 123;
+        //
     }
 
     /**

@@ -34,7 +34,7 @@ class Error
     /**
      * @param string $message
      */
-    public static function apiErr(string $message = '请求外部API错误！')
+    public static function apiErr(string $message = '请求错误！')
     {
         throw new UnexpectedValueException($message, config('error.program.code', 7000000));
     }

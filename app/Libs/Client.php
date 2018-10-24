@@ -2,6 +2,7 @@
 
 namespace App\Libs;
 
+use Throwable;
 use GuzzleHttp\Client AS GuzzleClient;
 
 /**
@@ -14,29 +15,33 @@ class Client extends GuzzleClient
     /**
      * Create a GuzzleHttp\Client instance
      *
-     * @return static
+     * @param array $config
+     * @return Client
      */
-    public static function parse()
+    public static function parse(array $config = [])
     {
-        return  new static();
+        return  new static($config);
     }
 
     /**
      * 签名
      *
      * @param array $params
+     * @param string $key
      * @return array
      */
-    public static function sign(array $params) : array
+    public static function sign(array $params, string $key = '') : array
     {
         $params += [
-            'expired' => microtime(true),
+            'timeStamp' => microtime(true),
         ];
 
         $sorted = Arr::kSort($params);
-        $sorted += [
-            'secret'  => config($params['key']),
-        ];
+
+        if (!empty($key)) {
+
+            $sorted += ['secret' => config($key),];
+        }
 
         $signature  = sha1(http_build_query($sorted));
 
@@ -46,13 +51,23 @@ class Client extends GuzzleClient
     }
 
     /**
-     * 获取结果
-     *
-     * @param   string  $response   响应内容
-     * @return  mixed               结果
+     * @param $method
+     * @param string $uri
+     * @param array $options
+     * @param bool $throw
+     * @return mixed|\Psr\Http\Message\ResponseInterface
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public static function getResult($response) : array
+    public function request($method, $uri = '', array $options = [], bool $throw = true)
     {
-        return  json_decode($response, true);
+        try {
+            $response = parent::request($method, $uri, $options);
+        } catch (Throwable $t) {
+
+            logger("服务器发送请求错误，文件：{$t->getFile()}，行数：{$t->getLine()}，错误信息：{$t->getMessage()}");
+            $throw && Error::apiErr();
+        }
+
+        return $response;
     }
 }

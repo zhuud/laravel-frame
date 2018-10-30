@@ -29,18 +29,7 @@ class TestController extends Controller
      */
     public function test(Request $request)
     {
-        $argc = [
-            'appId' => '123456',
-            'timeStamp' => '123456',
-            'nonceStr' => '123456',
-            'params' => [
-                'a' => '1',
-                'c' => '2',
-                'b' => '3',
-            ],
-        ];
-        Arr::kSort($argc);
-        return $argc;
+
     }
 
     /**

@@ -13,22 +13,17 @@ class City extends Model
      *
      * @var string
      */
-    protected $table        = 'cities';
+    protected $table        = 'city_info';
 
     /**
      * The primaryKey of the table
      */
-    protected $primaryKey   = 'adcode';
+    protected $primaryKey   = 'id';
 
     /**
      * The attributes that are not assignable
      */
     protected $guarded      = [];
-
-    /**
-     * Determine if the model uses timestamps.
-     */
-    public $timestamps      = false;
 
     /**
      * enum

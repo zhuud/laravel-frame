@@ -50,25 +50,21 @@ class SyncCity extends Command
     public function handle(City $cityModel)
     {
         $result     = $this->getApi();
-        $bar        = $this->output->createProgressBar($result);
+        $bar        = $this->output->createProgressBar(count($result));
 
         $cityModel->truncate();
 
         foreach ($result as $province) {
 
             $cityData   = [];
-            $cityData[] = $this->genData($province, 0);
+            $this->genData($province, 0, $cityData);
 
             foreach ($province['districts'] as $city) {
 
-                $cityData[] = $this->genData($city, $province['adcode']);
-
-                // 空的数据跳过(香港澳门数据adcode重复 数据问题 数据忽略)
-                if ($province['name'] == '香港特别行政区' || $province['name'] == '澳门特别行政区')   continue;
+                $this->genData($city, $province['adcode'], $cityData);
 
                 foreach ($city['districts'] as $district) {
-
-                    $cityData[] = $this->genData($district, $city['adcode']);
+                    $this->genData($district, $city['adcode'], $cityData);
                     $bar->advance();
                 }
             }
@@ -84,18 +80,25 @@ class SyncCity extends Command
      *
      * @param array $data
      * @param int $parentId
-     * @return array
+     * @param array $cityData
      */
-    protected function genData(array $data, int $parentId) : array
+    protected function genData(array $data, int $parentId, array &$cityData)
     {
-        return  [
+        $level = data_get(self::TYPE_MAP, $data['level']);
+        if (empty($level)) {
+            return;
+        }
+        $date = date('Y-m-d H:i:s');
+        $cityData[] = [
             'adcode'    => $data['adcode'],
             'citycode'  => empty($data['citycode']) ? 0 : $data['citycode'],
             'name'      => $data['name'],
             'pinyin'    => Pinyin::abbr($data['name']),
             'class'     => $this->getCityClass($data['name']),
             'parent_id' => $parentId,
-            'type'      => isset(self::TYPE_MAP[$data['level']]) ?? 3,
+            'type'      => data_get(self::TYPE_MAP, $data['level'],3),
+            'created_at' => $date,
+            'updated_at' => $date,
         ];
     }
 
@@ -108,7 +111,6 @@ class SyncCity extends Command
     protected function getCityClass(string $name) : int
     {
         foreach (config('city') as $class => $item) {
-
             if (in_array($name, $item))     return  $class;
         }
 
@@ -127,17 +129,16 @@ class SyncCity extends Command
             'query' => [
                 'subdistrict'   => 3,
                 'extensions'    => 'base',
-                'key'           => config('api.amap.key'),
+                'key'           => config('api.amap.gaodeKey'),
             ],
         ]);
 
-        $result  = Client::getResult($response->getBody()->getContents());
+        $result  = json_decode($response->getBody()->getContents(), true);
 
         if (self::SUCCESS_CODE != $result['infocode']) {
-
             Error::apiErr($result['info']);
         }
 
-        return  $result['districts'][0]['districts'];
+        return  data_get($result, 'districts.0.districts', []);
     }
 }

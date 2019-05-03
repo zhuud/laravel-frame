@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Model extends LaravelModel
 {
-    use SoftDeletes;
+    //use SoftDeletes;
 
     /**
      * The connection of db

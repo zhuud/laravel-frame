@@ -40,6 +40,7 @@ class Kernel extends HttpKernel
         'api' => [
             //'throttle:60,1',
             'bindings',
+            'api.response',
         ],
     ];
 
@@ -59,6 +60,6 @@ class Kernel extends HttpKernel
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        //'api.response' => \Zhuud\Proxy\Middleware\FmtApiResponse::class,
+        'api.response' => \Zhuud\Proxy\Middleware\FmtApiResponse::class,
     ];
 }
